@@ -25,9 +25,10 @@ const std::string COURSES_NOT_OFFERED_PATH = "student_output/courses_not_offered
  * Hint: Remember what types C++ streams work with?!
  */
 struct Course {
-  /* STUDENT TODO */ title;
-  /* STUDENT TODO */ number_of_units;
-  /* STUDENT TODO */ quarter;
+  std::string title;
+  std::string number_of_units;
+  std::string quarter;
+  //全都用string，后面用streams处理
 };
 
 /**
@@ -53,13 +54,24 @@ struct Course {
  * Hints:
  * 1) Take a look at the split function we provide in utils.cpp
  * 2) Each LINE is a record! *this is important, so we're saying it again :>)*
- * 3) The first line in the CSV defines the column names, so you can ignore it!
+ * 3) The first line in the CSV defines the column names, so you can ignore it!(第一行不要
  *
  * @param filename The name of the file to parse.
  * @param courses  A vector of courses to populate.
  */
-void parse_csv(std::string filename, std::vector<Course> courses) {
+void parse_csv(std::string filename, std::vector<Course>& courses) {//courses要改成引用类型，否则无法修改实际值
   /* (STUDENT TODO) Your code goes here... */
+  std::ifstream ifs(filename);
+  if(ifs.is_open()){
+    std::string line;
+    std::getline(ifs,line);
+    //第一行丢弃
+    while(std::getline(ifs,line)){
+      std::vector vec=split(line,',');
+      courses.push_back({vec[0],vec[1],vec[2]});
+    }
+  }
+  ifs.close();
 }
 
 /**
@@ -82,6 +94,22 @@ void parse_csv(std::string filename, std::vector<Course> courses) {
  */
 void write_courses_offered(std::vector<Course> all_courses) {
   /* (STUDENT TODO) Your code goes here... */
+  std::ofstream ofs(COURSES_OFFERED_PATH);
+  if(ofs.is_open()){
+    ofs<<"Title,Number of Units,Quarter"<<std::endl;//写标题
+    std::vector<Course> courses_null_queater;//存储quarter为null的course
+    for(const auto& course:all_courses){
+      auto [title,units,quarter]=course;
+      if(quarter!="null")
+        ofs<<title<<","<<units<<","<<quarter<<std::endl;
+      else{
+        //使用列表初始化，同时送入临时向量
+        courses_null_queater.push_back({title,units,quarter});
+      }
+    }
+    all_courses=courses_null_queater;
+  }
+  ofs.close();
 }
 
 /**
@@ -99,6 +127,17 @@ void write_courses_offered(std::vector<Course> all_courses) {
  */
 void write_courses_not_offered(std::vector<Course> unlisted_courses) {
   /* (STUDENT TODO) Your code goes here... */
+  std::ofstream ofs(COURSES_NOT_OFFERED_PATH);
+  if(ofs.is_open()){
+    ofs<<"Title,Number of Units,Quarter"<<std::endl;//写标题
+    for(const auto& course:unlisted_courses){
+      auto [title,units,quarter]=course;
+      if(quarter=="null")
+        ofs<<title<<","<<units<<","<<quarter<<std::endl;
+      
+    }
+  }
+  ofs.close();
 }
 
 int main() {
