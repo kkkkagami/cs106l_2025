@@ -99,6 +99,7 @@ void write_courses_offered(std::vector<Course> all_courses) {
     ofs<<"Title,Number of Units,Quarter"<<std::endl;//写标题
     std::vector<Course> courses_null_queater;//存储quarter为null的course
     for(const auto& course:all_courses){
+      //cpp17:结构化绑定.自动推断类型，并将向量course里的相应成员元素赋值给中括号里的变量
       auto [title,units,quarter]=course;
       if(quarter!="null")
         ofs<<title<<","<<units<<","<<quarter<<std::endl;
