@@ -25,7 +25,7 @@ struct Misspelling {
   std::set<std::string> suggestions;
 };
 
-using Corpus = std::set<Token>;
+using Corpus = std::set<Token>;//Corpus是set<Token>的别名
 using Dictionary = std::unordered_set<std::string>;
 
 Corpus tokenize(std::string& input);

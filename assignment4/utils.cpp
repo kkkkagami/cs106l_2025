@@ -8,6 +8,7 @@ bool operator<(const Token& a, const Token& b) {
 
 bool operator<(const Misspelling& a, const Misspelling& b) { return a.token < b.token; }
 
+//返回一组迭代器，它们指向begin和end之间匹配pred的字符
 template <typename Iterator, typename UnaryPred>
 std::vector<Iterator> find_all(Iterator begin, Iterator end, UnaryPred pred) {
   std::vector<Iterator> its{begin};
