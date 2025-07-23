@@ -1,3 +1,4 @@
+**.cpp文件包含中文字符时无法自动评分，故带注释版本单独写出**
 <p align="center">
   <img src="docs/header.png" alt="Header image with the text, in a code font, [~]$ ispell, on a black background" />
 </p>
